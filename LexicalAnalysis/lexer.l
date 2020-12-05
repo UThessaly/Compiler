@@ -101,9 +101,6 @@ WHITESPACE      [ \t]
 
  /* Simple Constants */
 
-
-
-
  /* Int Dec */
 (0|{NZ_NUMBER}{DIGIT}*)                                  NUMBER(T_ICONST, 10);
 

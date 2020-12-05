@@ -1,5 +1,9 @@
 # Lexical Analysis
 
+2117083 - Konstantinos Kosyfarinis
+2114046 - Nikos Pappas
+2116085 - Dimitris Mpouros
+
 ## Compilation
 
 ```bash
@@ -16,3 +20,7 @@ $ ./a.out <input file>
 $ ./a.out
 
 ```
+
+## To Implement
+
+- Exponents 
