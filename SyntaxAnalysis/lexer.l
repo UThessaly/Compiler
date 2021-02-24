@@ -4,6 +4,8 @@
 #define TOKEN(token_id) { print_token(token_id, #token_id); return token_id; }
 #define NUMBER(token_id, base) { print_int(token_id, base); return token_id; }
 #define FLOAT(token_id, base) { print_float(token_id, base); return token_id; }
+#define STRING() { print_string(); return T_STRING; }
+
 
 #include <stdio.h>
 
@@ -15,12 +17,13 @@
 #include <unistd.h>
 #include <math.h>
 #include <string.h>
+#include "config.h"
 
-int errors = 0;
+int flex_errors = 0;
 int maxErrors = 10;
 static int lineno = 1;
 
-char string_buffer[MAX_STR_LINE];
+char string_buffer[MAX_STR_SIZE];
 char* string_buffer_ptr;
 
 char* file_name;
@@ -258,7 +261,7 @@ void print_float(int token_id, int base) {
     printf(""CYAN"line: "YELLOW"%d "RESET" "CYAN"float:"RESET" "MAGENTA"%f"RESET" "CYAN"base:"RESET" "MAGENTA"%d"RESET" "CYAN"id:"RESET" "RED"%d"RESET" "CYAN"text:"RESET" "GREEN"%s"RESET"\n", lineno, num, base, token_id, yytext);
 }
 
-// extern int errors;
+// extern int flex_errors;
 
 int main(int argc, char** argv) {
     int token;
@@ -313,7 +316,7 @@ float hex_to_real(char*str){
 }
 
 void error(char* message_type, char* err_message, int type) {
-    errors++;
+    flex_errors++;
 
     printf(RED "ERROR: " RESET "at line " RED "%d" RESET ":\n", yylineno);
     printf(    "  |    " RESET "Error: " RED "%s\n" RESET, message_type);
@@ -321,7 +324,7 @@ void error(char* message_type, char* err_message, int type) {
     printf(    "  |    Error Message: " RED " %s\n" RESET, err_message);
     printf(    "  |           " RED "^~~~~~\n\n" RESET);
 
-    if(errors >= MAX_ERRORS) {
+    if(flex_errors >= MAX_ERRORS) {
         printf("" RED "Max Errors Detected" RESET);
         exit(10);
     }

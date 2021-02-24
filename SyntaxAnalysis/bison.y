@@ -4,7 +4,7 @@
 #include <unistd.h>
 #include <math.h>
 #include <string.h>
-#include "settings.h"
+#include "config.h"
 
 extern int lineno;
 
@@ -38,10 +38,15 @@ void yyerror(const char* message);
 %token <intvalue> T_ICONST "integer constant"
 %token <realvalue> T_RCONST "real constant"
 
+%token <strval> T_LCONST "logical constant"
+%token <strval> T_REAL "real keyword"
+%token <strval> T_INTEGER "integer keyword"
+
 %token <strval> T_EOF "eof"
 %token <strval> T_FUNCTION "function"
 %token <strval> T_SUBROUTINE "subroutine"
 %token <strval> T_END "end"
+%token <strval> T_RELA "real keyword"
 %token <strval> T_LOGICAL "logical"
 %token <strval> T_CHARACTER "character"
 %token <strval> T_RECORD "record"
@@ -154,6 +159,7 @@ value: repeat T_MULTOP T_ADDOP constant
 
 repeat: T_ICONST         
         | %empty;
+
 constant: T_ICONST         
         | T_RCONST         
         | T_LOGICAL         
@@ -256,3 +262,8 @@ header: type T_FUNCTION T_ID T_LPAREN formal_parameters T_RPAREN
 formal_parameters: type vars T_COMMA formal_parameters
         | type vars;
 
+%%
+
+void yyerror (char const *s) {
+   fprintf (stderr, "%s\n", s);
+ }
